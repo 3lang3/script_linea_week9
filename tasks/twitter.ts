@@ -16,5 +16,6 @@ export const retweet = async (wallet: ethers.Wallet) => {
     if (!r.typedCredentialItems) {
       throw Error('retweet任务失败');
     }
+
   })
 };

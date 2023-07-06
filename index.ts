@@ -52,10 +52,16 @@ cli(async ({ action, pks, startIdx, endIdx }) => {
     try {
       if (action === 'claim') {
         await claim(wallet);
-      } else {
+      }
+
+      if (action === 'vote') {
         await snapshot.vote(wallet);
+      }
+
+      if (action === 'retweet') {
         await twitter.retweet(wallet);
       }
+      
     } catch (error) {
       console.log(error?.reason || error?.message)
     }
