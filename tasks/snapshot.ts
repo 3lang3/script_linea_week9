@@ -113,9 +113,7 @@ export async function vote(wallet: ethers.Wallet) {
   const proposal = await getProposals()
   await task('vote', wallet, async () => {
     const choice = randomChoice(proposal.choices.length);
-    console.log(`[${wallet.address}投票]: 第${choice}项-${proposal.choices[choice-1]}`);
-    await loop( async () => {
-      await voteOn(wallet, { space: config.snapshotSpace, proposal: proposal.id, choice: choice })
-    })
+    console.log(`[${wallet.address}投票]: 第${choice}项-${proposal.choices[choice - 1]}`);
+    await voteOn(wallet, { space: config.snapshotSpace, proposal: proposal.id, choice: choice })
   })
 }

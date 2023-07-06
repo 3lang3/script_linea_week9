@@ -31,7 +31,7 @@ export function getTxtContent(path: string) {
 }
 
 /** 循环执行直到任务成功 */
-export function loop(task) {
+export function loop(task, sleepNum = 0) {
   return new Promise(async (resolve) => {
     while (true) {
       try {
@@ -40,6 +40,9 @@ export function loop(task) {
         break;
       } catch (error) {
         console.log(`[loop] ${error?.reason || error?.message}`)
+      }
+      if (sleepNum) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * sleepNum))
       }
     }
   })
