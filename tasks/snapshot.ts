@@ -1,7 +1,9 @@
 import config from "@/config"
-import { loop, task } from "@/utils/utils"
+import { task } from "@/utils/utils"
 import axios from "axios"
 import { ethers } from 'ethers'
+
+const provider = new ethers.providers.JsonRpcProvider('https://rpc.goerli.linea.build')
 
 function randomChoice(len: number) {
   return Math.floor(Math.random() * len) + 1
@@ -112,6 +114,11 @@ async function getProposals() {
 export async function vote(wallet: ethers.Wallet) {
   const proposal = await getProposals()
   await task('vote', wallet, async () => {
+    const signer = wallet.connect(provider);
+    const balance = await signer.getBalance();
+    if (balance.lt(ethers.utils.parseEther('0.1'))) {
+      throw new Error(`需要在linea链有0.1eth测试币，当前余额${ethers.utils.formatEther(balance)}`)
+    }
     const choice = randomChoice(proposal.choices.length);
     console.log(`[${wallet.address}投票]: 第${choice}项-${proposal.choices[choice - 1]}`);
     await voteOn(wallet, { space: config.snapshotSpace, proposal: proposal.id, choice: choice })
