@@ -4,7 +4,6 @@ export default {
   // 从网址获取 campaignId
   // 例如 https://galxe.com/Linea/campaign/GCw91UQDkQ，campaignId就是 GCw91UQDkQ 
   campaignId: 'GCvpxUetXY',
-  
   snapshotSpace: 'linea-build.eth',
   snapshotId: '0x9f0e54337d515a9daa2e9cc05580b1993ebb18e2ebc465cf3ee6e777df369e2b',
 }

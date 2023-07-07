@@ -34,9 +34,17 @@ async function sendRequest(data) {
     },
     data: JSON.stringify(data)
   };
-  const res = await axios(config)
-  if (!res.data || !res.data?.id) {
-    throw new Error('投票失败')
+  try {
+    const res = await axios(config)
+    if (!res.data || !res.data?.id) {
+      throw new Error('投票失败')
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data?.error_description || '投票失败')
+    } else {
+      throw new Error('投票失败')
+    }
   }
 }
 
@@ -115,5 +123,5 @@ export async function vote(wallet: ethers.Wallet) {
     const choice = randomChoice(proposal.choices.length);
     console.log(`[${wallet.address}投票]: 第${choice}项-${proposal.choices[choice - 1]}`);
     await voteOn(wallet, { space: config.snapshotSpace, proposal: proposal.id, choice: choice })
-  }, { force: true })
+  })
 }
